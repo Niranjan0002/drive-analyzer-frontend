@@ -6,7 +6,7 @@ const Header = ({ styles, searchQuery, setSearchQuery, toggleSidebar, activeNavI
   const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/user', { credentials: 'include' })
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/user`, { credentials: 'include' })
       .then((res) => res.json())
       .then((data) => {
         setUserInfo({
@@ -22,7 +22,7 @@ const Header = ({ styles, searchQuery, setSearchQuery, toggleSidebar, activeNavI
 
   const confirmLogout = () => {
     setShowConfirm(false);
-    window.location.href = 'http://localhost:5000/logout';
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/logout`;
   };
 
   const cancelLogout = () => setShowConfirm(false);

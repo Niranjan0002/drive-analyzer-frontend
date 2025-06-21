@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import GoogleDriveAnalyzer from './components/GoogleDriveAnalyzer';
@@ -9,7 +8,7 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/user', { credentials: 'include' })
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/user`, { credentials: 'include' })
       .then((res) => {
         if (!res.ok) throw new Error('Unauthorized');
         return res.json();
@@ -23,7 +22,7 @@ function App() {
       });
   }, []);
 
-  if (isAuthenticated === null) return null; // Optionally, add a loading spinner
+  if (isAuthenticated === null) return null;
 
   return (
     <Router>

@@ -3,7 +3,7 @@ import React from 'react';
 
 const LoginPage = () => {
   const handleLogin = () => {
-    window.location.href = 'http://localhost:5000/login';
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/login`;
   };
 
   return (

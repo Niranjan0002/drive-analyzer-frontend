@@ -35,7 +35,7 @@ const MyFiles = ({ files, styles, searchQuery = '' }) => {
 
   const handleDelete = (fileId) => {
     if (window.confirm('Are you sure you want to delete this file?')) {
-      fetch(`http://localhost:5000/delete/${fileId}`, {
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/delete/${fileId}`, {
         method: 'DELETE',
         credentials: 'include'
       })

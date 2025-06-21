@@ -9,6 +9,8 @@ import SharedFiles from './SharedFiles/SharedFiles';
 import FavoriteFiles from './FavoriteFiles/FavoriteFiles';
 import { getResponsiveStyles } from './styles';
 
+const API = import.meta.env.VITE_BACKEND_URL;
+
 const GoogleDriveAnalyzer = ({ user }) => {
   const [activeNavItem, setActiveNavItem] = useState('Dashboard');
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,23 +29,23 @@ const GoogleDriveAnalyzer = ({ user }) => {
   const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible);
 
   useEffect(() => {
-    fetch('http://localhost:5000/files', { credentials: 'include' })
+    fetch(`${API}/files`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => setRecentFiles(data.slice(0, 12)));
 
-    fetch('http://localhost:5000/all-files', { credentials: 'include' })
+    fetch(`${API}/all-files`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => setAllFiles(data));
 
-    fetch('http://localhost:5000/shared', { credentials: 'include' })
+    fetch(`${API}/shared`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => setSharedFiles(data));
 
-    fetch('http://localhost:5000/favorites', { credentials: 'include' })
+    fetch(`${API}/favorites`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => setFavoriteFiles(data));
 
-    fetch('http://localhost:5000/storage', { credentials: 'include' })
+    fetch(`${API}/storage`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => setStorage(data));
   }, []);
@@ -58,7 +60,7 @@ const GoogleDriveAnalyzer = ({ user }) => {
     formData.append("file", file);
 
     try {
-      const res = await fetch("http://localhost:5000/upload", {
+      const res = await fetch(`${API}/upload`, {
         method: "POST",
         body: formData,
         credentials: "include"
@@ -68,9 +70,8 @@ const GoogleDriveAnalyzer = ({ user }) => {
 
       if (data.status === "success") {
         setUploadStatus(`✅ File uploaded: ${file.name} (ID: ${data.fileId})`);
-        
-        // optional: refresh files
-        const updated = await fetch("http://localhost:5000/all-files", { credentials: "include" });
+
+        const updated = await fetch(`${API}/all-files`, { credentials: "include" });
         const newFiles = await updated.json();
         setAllFiles(newFiles);
       } else {
@@ -85,7 +86,6 @@ const GoogleDriveAnalyzer = ({ user }) => {
   };
 
   const handleDragOver = (e) => e.preventDefault();
-
   const handleDrop = (e) => {
     e.preventDefault();
     handleFileUpload(e);
